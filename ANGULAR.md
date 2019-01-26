@@ -49,3 +49,80 @@
 + AngularJS - 2010 js framework. Complex 
 + Angular 2 - 2016 Re-written. Typescript support
 + Angular 4 - TO align all the versions of libs, released angular 4. Example http, core version 2.x.x & router version was 3.x.x. In angular 4, versions were upgraded to 4
+
+####Typescript 
+
++ Typescript - superset of javascript. Supports strong typing(Optional), Object oriented features - classes, interfaces, generics etc. Catches errors at compile time. 
++ TypeScript --> Transplie --> Javascript 
++ Install & run typescript 
+    + npm install -g typescript 
+    + tsc -- version (Typescript compiler)
+    + tsc main.ts 
+    + If you ls - main.js, main.ts 
+    + node main.js . It runs that means valid typescript code is valid js code
+    + When you run ng serve, angular cli runs transpiler under the hood. 
++ Typescript variable declaration 
+   + var , In below example i is accessible outside for. Accessible in nearest function
+   ```javascript
+   function doSomething(){
+        for(var i = 0; i<5 ; i++){
+            console.log(i);
+        }
+        console.log('Finally : '+i)
+   }
+   
+   // Output
+   0
+   1
+   2
+   3
+   4
+   Finally 5
+   ```
+   + let (ES6 has it) Accessible in nearest block. So not outside of for
+    ```javascript
+      function doSomething(){
+           for(let i = 0; i<5 ; i++){
+               console.log(i);
+           }
+           console.log('Finally : '+i) // compile time error
+      }
+    ```
+    + Transpiler by default converts TS to ES5. Which does not have let keyword. 
+    + Use let over var
++ Types
+    + let a : any;
+    + let a :number; // integer, floating point 
+    + let a : boolean; // true, false
+    + let a : string;
+    + Array -let a: number[] = [1,2,3,4,5], let b: any[] = [1. 2. "a", false]
+    + Enum -
+    ```
+    enum Color{Red = 0, Green = 1, Blue = 1};
+    let backGroundColor = Color.Red; 
+    
+    // If u comiple it, In js u can see the code function(Color)...
+    ```
+    + const red = 0;
++ Type assertions 
+    + let message = 'abc'; message.endsWith('c') // U get intelligence here but if u declare message and then initialise it in 2nd line, message type becomes any. So u wont get any intellisense. 
+        + Solution 1. (<string>message).endsWith('c'); // Intelligence available
+        + Solution 2. (message as string).endsWith('c'); // Intelligence available
+        NOTE: It doesnt change anything except we get Intelligence. 
++ Arrow functions 
+    + JavaScript
+    ```
+    let log = function(message){
+        console.log(message);
+    }
+    ```
+    + TypeScript    
+    ```
+    let doLog = (message) =>{
+        console.log(message);
+    }
+    
+    let doLog = (message) => console.log(message);
+    // for singe line {} is not neccessary 
+    ```
++ Interface 
