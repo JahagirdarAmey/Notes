@@ -24,7 +24,7 @@
         + ptotractor.conf.js
         + tsconfig.json - TS settings
         + tslint.json - lint settings    
-    + Asstes - img, icon etc
+    + Assets - img, icon etc
     + environments - Prod & dev env
     + index.html
     + main.ts - starting point of an application 
@@ -123,6 +123,27 @@
     }
     
     let doLog = (message) => console.log(message);
-    // for singe line {} is not neccessary 
+    // for singe line {} is not neccessary, but it will break
     ```
 + Interface 
+    + 
+    ``` 
+    let drawPoint = (point) => {//...}
+    drawPoint({x:1,y:2}) // No compile time error
+    ```
+    Inline annotation
+    ``` 
+    let drawPoint = (point : {x: number, y: number}) => {//...}
+    drawPoint({x:1,y:2}) // No compile time error
+    ```
+    Interface
+    ``` 
+    interface Point{
+        x:number;
+        y:number;
+    }
+    
+    let drawPoint = (point : Point) => {//...}
+    drawPoint({x:1,y:2}) // No compile time error
+    ```
+    
