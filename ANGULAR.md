@@ -146,4 +146,98 @@
     let drawPoint = (point : Point) => {//...}
     drawPoint({x:1,y:2}) // No compile time error
     ```
+
++ Classes
+    + Cohesion - related things should be part of same unit, They should go together
+    + In interfaces example, we have violated cohesion principle. Point and drawPoint should be part of same unit - class
+    + To apply, use class instead interface
+    ```
+       class Point{
+        x: number;
+        y: number;
+        
+        draw(){
+        
+        }
+       }
+    ```
+
++ Objects 
+    ```
+    let point : Point; 
+    point.x = 1; ....
+    point.draw(); // draw() -> undefined
+    
+    
+    let point : new Point(); 
+    point.x = 1; ....
+    point.draw(); // OK
+    
+    OR
+    
+    let point : Point = new Point();
+    point.x = 1; ....
+    point.draw(); // OK . NOISE -------- : Point 
+    ```
++ Constructor 
+    ```
+     class Point{
+            x: number;
+            y: number;
+            
+            constructor(x:number, y:number){ // Constructor - keyword 
+                // initialize here x & y
+            }
+            
+            draw(){
+            
+            }
+     }
+        
+     let point : new Point(1,2); 
+     point.draw();      
+           
+    ```
+    + Like java, We can't have multiple constructors, So solution is to make parameters optional.
+    + Once, You make 1 parameter optional, all the parameters at the right side should also be optional. 
+     hence if we want to make x optional , we have to make y optional .
+     
+    ```
+         constructor(x?:number, y?:number){  
+                       // initialize here x & y
+         }  
+            
+    let point : new Point(); // No compilation error         
+    ```
+    
++ Access modifiers 
+    + public - (By default - public, so applying public is redundant)
+    + private - (Only accessible within class)
+    + protected 
+    + Access modifiers in constuctor parameters 
+    ```
+    class Point{
+        
+        constructor(private x:number){
+        
+        }
+        
+        draw(){
+        
+        }
+        
+        getX(){
+            return this.x;
+        }
+        
+        setX(){
+        
+        }
+    }
+    
+    Now I don't have to declare class level variable x & then in constrcutor this.x = x.
+    Typescript will take care of it. (If Access modifiers in constuctor parameters is used) 
+    If u use public, then u will be able to modify x.
+    point.x = 10; 
+    ```
     
