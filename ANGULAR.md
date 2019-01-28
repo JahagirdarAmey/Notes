@@ -8,6 +8,7 @@
 + MAC
 + Windows
     + Shift+ctrl+P - Opens command palate 
+    + F2 - Rename
 
 ####Folder structure  
 + E2E - Write E2E tests (Lauch browser, navigate, click something ...)
@@ -226,13 +227,7 @@
         
         }
         
-        getX(){
-            return this.x;
-        }
-        
-        setX(){
-        
-        }
+       
     }
     
     Now I don't have to declare class level variable x & then in constrcutor this.x = x.
@@ -240,4 +235,47 @@
     If u use public, then u will be able to modify x.
     point.x = 10; 
     ```
++ Properties
+
+ ```
+    class Point{
+        
+       ...
+       
+        getX(){
+            return this.x;
+        }
+        
+        setX(value){
+            this.x = value;
+        }
+    }
     
+    NOTE: Use properties instead of getter , setter. 
+    
+    get X(){
+        return this.x;
+    }
+    
+    set X(value){
+        this.x = value;
+    }
+    
+    Now, instead of point.setX(10), You can do point.X = 10; 
+    ** If get x is used instead of X, It will thorw a compile time error. because of 
+    constructor(private x:number){...}
+   
+   Properties looks like property from outside but its really a method from inside 
+ ```
++ Modules
+    + We can say file as a module when it is visible from outside. To make file module - export it. When file is exported, import it. 
+    + Anything can be exported, feild, methods, classes etc. 
+     
+     
+#### Angular Fundamentals 
+##### Building Blocks Of Angular
++ Components - Encapsulates data, html, logic for view. App is made up of 1 or more components. Every app has app component, and app is a tree starting from app component
++ Modules - Container, or group of related component. Every app has app module. 
+
+
+ 
