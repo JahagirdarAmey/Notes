@@ -275,7 +275,32 @@
 #### Angular Fundamentals 
 ##### Building Blocks Of Angular
 + Components - Encapsulates data, html, logic for view. App is made up of 1 or more components. Every app has app component, and app is a tree starting from app component
-+ Modules - Container, or group of related component. Every app has app module. 
++ Modules - Container, or group of related component. Every app has app module.
++ Directives - We use directive to manipulate DOM, Example ngFor="", Use it like attribute in html. 
+ prefix directive which will manipulate DOM with *. Reason ? -
++ Services -  
+    + Logic to calling http service in component
+        + Problem - Service would be tightly coupled , hence problem in unit testing.(Dependency of HTTP)
+        + Problem - Somewhere in app we may want to invoke this service. So logic will be repeated.
+        + Component should not include logic other than a presentation logic. 
+    + New file - *.service.ts (Convention) 
+    + export class - export *Service{}
+    + getCourses method with logic in it
+    + Dependency Injection - 
+        + In order to consume service in component, use constructor() to initialize service & data of service.
+    Now, as in constructor of component, we have written a statement like = new *Servive(); , Now, is is tightly coupling.
+        + And by chance, If we change structure of service constructor, Where ever the service is used, compiler will cry. 
+        + So, Add parameter in component constructor. (Inject service in component constructor. )
+        + Now, 2nd advantage is, Whenever we need to unit test component, If we would have used = new *Service in constructor. We would have to give actual implementatiion. Now as we have injected dependency, we can fake its implementation in unit testing. 
+        + To instruct angular to inject service, app.module -> provider[] -> register dependencies, (as *Service is dependent on *Component). If you forget this, dependency injection wont work. Error -> No providers for *Service
+        + app.module -> provider -> service resisted -> singleton. 
+    + ng generate service * OR ng g s *. 
+        + *.service.ts
+            + Now, extra @Injectable() on class level. Why ? When service needs extra dependencies in its constrcutor. (Ex- logService, http)
+            + Now, This class is injectable class, means angular should be able to inject dependencies in it. So Why we did not use this in Component? because component internally call Injectable. 
+        + *.service.spec.ts
+    
+       
 
 
  
