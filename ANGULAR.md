@@ -300,7 +300,19 @@
             + Now, This class is injectable class, means angular should be able to inject dependencies in it. So Why we did not use this in Component? because component internally call Injectable. 
         + *.service.spec.ts
     
-       
+###Displaying data and handling events       
+####Property Binding
++ Interpolaton means {{}}
++ Interpolation is syntactical sugar, behind the scenes angular translates intopolation in property binding, Binding property of a DOM element like src="..." to feild or property in our component. 
+```
+<img [src]="imageUrl" > // we are not using interpolation i.e {{}} here.
+// We want src value to be bind with imageUrl from component. 
+<img src = {{imageUrl}}> Equvivalent
+```
++ When to use interpolation or when to use property binding
+```
+<h2 [textContent]="title"></h2> // NOISY 
+<h2><{{"title"}}/> // Shorter and cleaner. 
+```
++ NOTE: Property binding works only one way.  from componet to DOM. So any changes from DOM won't be reflected in here. 
 
-
- 
