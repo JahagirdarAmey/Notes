@@ -314,5 +314,62 @@
 <h2 [textContent]="title"></h2> // NOISY 
 <h2><{{"title"}}/> // Shorter and cleaner. 
 ```
++ [] and feild name name 
 + NOTE: Property binding works only one way.  from componet to DOM. So any changes from DOM won't be reflected in here. 
 
+####Attribute Binding
++ Suppose we have <td [colspan]="colSpan"/>, Error - Can't bind to colspan since it isnt a known property of td
++ DOM(Document Object model) vs HTML 
+    + DOM - Tree of objects, like html --> head --> title, script. i.e tree of objects in memory
+    + HTML - Markup language used to represent DOM in text. 
+    + Most of the attributes of html elements (for example src from <img></img> ) have one to one mapping with DOM elements. But there are html attributes that dont have representation in DOM. Example colspan. 
+    + Also, we have properties in DOM that do not have representation in HTML. example <h1 [textContent]='title'/> we don't have textContent in html. 
+    + <td [attr.colspan]="colSpan"/>
+     
+####Adding Bootstrap 
++ getbootstrap.com
++ Now, terminal --> style.bundle.js --> 10kb
++ npm install bootstrap --save (download in node modules and make entry in package.json )
++ styles.css - import bootstrap.css from node modules 
++ Now, styles.bundle.js size 159 KB
+
+####Class binding
++ add classes based on condition 
+```
+<button class="btn btn-primary" [class.active]="isActive">Save</button>
+```
+Now, if isActive feild from typescript is set to true then, active css class is included in style. if false then active css class won't be applied. 
+So, If if isAtcive is true then, [btn , btn-primary, active] css classes will be applied. 
+
+NOTE: For class binding we use property binding variation. hence [ ] is used
+
+####Style binding
+Also, variation in property binding, very similar to class binding. If developer wants to apply styles based on condition.
+
+```
+<button [style.x]="isActive ? 'blue' : 'white' "/>
+
+x -> any propery of dom object, Example backgroundColor. For complete list of all the properties of style object. search "DOM  style object properties" on Google, w3schools has the list. 
+
+<button [style.backgroundColor]="isActive ? 'blue' : 'white' "/>
+```
+
+####Event binding
++ to handle events raised on the DOM. 
++ use ( )
+```
+<button (click)="onSave()">save</button>
+
+onSave() method in component
+```
+
+To access Event object, add parameter to onSave()
+
+```
+<button (click)="onSave($event)">save</button>
+
+onSave($event) method in component
+```
+
++ $event represents standard DOM event, (seen in vanila js, jQuery)
++ Custom events also can be make.
