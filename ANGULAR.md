@@ -361,6 +361,9 @@ x -> any propery of dom object, Example backgroundColor. For complete list of al
 <button (click)="onSave()">save</button>
 
 onSave() method in component
+
+
+// This will invoke onSave(). 
 ```
 
 To access Event object, add parameter to onSave()
@@ -373,3 +376,97 @@ onSave($event) method in component
 
 + $event represents standard DOM event, (seen in vanila js, jQuery)
 + Custom events also can be make.
++ All the DOM events bubble up the DOM tree, unless handler prevents further bubbling. This is standard event propogation mechanism in DOM. Example:
+```
+<div (click)="onDivClicked()"
+  <div (click)="onDivClicked()"
+    <button (click)="onSave($event)">save</button>
+  </div>  
+</div>  
+
+
+$event - this object will bubble up and hit the outer div. 
+TO STOP
+    - onSave($event){
+        $event.stopPropogation();
+    }
+    
+// THis will not invoke onDivClicked()     
+```
+
+
+####Event filtering
++ On ENTER, Do something
+    + Traditional Way
+        ```
+            <input (keyup)="onKeyUp($event)"/>
+            
+            onKeyUp($event){
+                if($event.keyCode ===13) console.log("ENTER PRESSED")
+            }
+        ```
+        
+    + Angular way
+        ```
+            <input (keyup.enter)="onKeyUp()"/> // NO NEED TO PASS event
+                    
+            onKeyUp(){
+               // No ceromony. It will invoke only on pressing enter
+            }
+        ```
+
+#####Template Variables
+To get the value we are giving to input.
+```
+    <input (keyup.enter)="onKeyUp($event)"/>
+           
+    onKeyUp($event){
+      console.log($event.target.value)
+    }
+```
+
+Using template variable
+```
+    <input #email (keyup.enter)="onKeyUp(email.value)"/>
+           
+    onKeyUp(email){
+      console.log(email)
+    }
+```
+        
+####Two way binding. 
++ Passing objects - also carries some data, some behaviour - procedural programming. Not recommended 
+```
+<input [(ngModel)]="email" (keyup.enter)="onKeyUp()"/>
+           
+    email="xyz.abc"       
+           
+    onKeyUp(){
+      console.log(this.email)
+    }
+    
+    - [()] Banana in a box syntax 
+    - ngModel - Why ? Input DOM object does not have propertry called ngModel. This is something that angular adds to DOM object.
+    (Directive - to manipulate DOM)
+    - ngModel is in form module. app.module.ts -> @NgModel -> imports -> FormsModule. 
+```       
+  
+####Pipes
++ To format data
++ Built in pipes- Uppercase, Lowercase, Decimal, Currancy, Percent
++ Example - {{ title | uppercase}}, {{price | currency}} -> USD . To change it to AUS dollar. {{price | currency:'AUD':true}} // :true to display symbol
+
+####Custom Pipes
++ New file summary.pipe.ts
++ import Pipe, PipeTransform from core
++ @Pipe({ name: 'summary'})
++ export SummaryPipe implements PipeTransform
++ transform(value: any, args?: any){ // business logic }
++ Just like component, service, we need  to register pipe in module. @NgModule({declarations : [SummaryPipe]})
++ TO USE : {{text | summary}}
++ TO SUPPLY ARGUMENTS : transform(value: any, limit?: number){ // business logic }
+Now, {{ text | summary:50 }}. We can add more parameters to this.
+
+###Building Reusable components
+
+####Component API
