@@ -470,3 +470,182 @@ Now, {{ text | summary:50 }}. We can add more parameters to this.
 ###Building Reusable components
 
 ####Component API
++ Input Property
+    + 1st Approach 
+        + Annotate feild with @Input. Example isFavorite.
+        + To input this component
+        ```
+        <favorite [isFavorite]="true"></favorite>
+        ```
+    + In component decorator,
+        ```
+        @Component({
+        selector: 'favorite',
+        ...
+        inputs: ['isFavorite']
+        })
+        ```
+        + If someone refactor renames isFavourite, ['isFavorite'] will not be updated. NOT RECOMMENDED. 
+    + Aliasing input property.
+        + @Input('is-favorite')
+        + If someone refactors and renames iSFavorite, App will break because,  <favorite [isFavorite]="true"></favorite> is not refactoed. Hence alising is a good idea. 
++ Output          
+    + favourite component raise a custom event - onFavoriteChanged() 
+    + add a method in favorite component -  onFavoriteChanged()
+    ```
+     <favorite [isFavorite]="true" (change)="onFavChange()"></favorite>
+     
+     // in implementation of onFavChange(). Event change will be notified.
+
+
+     @Output() change = new EventEmitter();
+     
+     onClick(){
+     
+     this.change.emit();
+     }
+    ```
++ Passing Event Data
+     ```
+     <favorite [isFavorite]="true" (change)="onFavChange($event)"></favorite>
+     
+     // in implementation of onFavChange($event). Event change will be notified.
+     // $event - anything that we pass, not standard DOM event. 
+     // here boolean is passed, we can pass anything
+     // **** We can specify type of argument to pass. We can specify interface to specify type
+     
+     ....
+     
+     @Output() change = new EventEmitter();
+         
+     onClick(){
+         
+       this.change.emit(this.isSelected); // Subscriber will have values 
+     }
+     
+     
+     
+     ```
++ Aliasing Output Properties      
+    + @Output() change = new EventEmitter(); If you change - change, app will break, hence alising would be better. 
+    + @Output('change') - DONE
+
++ Templates 
+    + use either templateUrl or template
+    + Developer console - Network - main.bundle.js -> html code
+    
++ Styles - 3 ways to apply styles 
+    + styleUrls in @component
+    + styles: [
+        ``
+            css goes here
+        `
+    ] 
+    + Inline in html templates 
+    + NOTE: The one that comes last in @component. Only applies styles from last thing, It will completly ignore all other styles. 
+    
++ View encapsulation 
+    + styles applied in components are scoped in that component
+    + Shadow DOM
+        + It is a specification that enables DOM tree and style encapsulation  
+        + Allows us to apply scoped styles to elements without bleeding out to the outer world
+        + @Component({ encapsulation: ViewEncapsulation.Emulated })
+            + Emulated - Emulates shadow DOM (Default - No need to change)
+            + Native - Uses Shadow DOM , Which wont work in many browers. Chrome higher & Safari 10+.
+            + None- No shadow DOM encapsulation  
+ 
++ ngContent
+    ```
+    <div>
+        <div class="heading"></div> // I want to pass heading text from outside 
+        <div class="heading"></div> // I want to pass body text from outside 
+    </div>
+    
+    //Not using property binding to achiev this.
+    ```        
+    ngContent
+    ```
+        <div>
+            <div class="heading">
+                <ng-content select=".heading"></ng-content>
+            </div>  
+            <div class="body">
+                <ng-content select=".body"></ng-content>
+            </div>  
+        </div>
+        
+        //Select is identifier and its value is matcher 
+        
+        
+        <component>
+          <ng-container class="heading">abcdef...</ng-container>          // It will replace ng-conent. class is matcher
+          <ng-container class="body"> ....complext-html....</ng-container> // Noise of extra div reduced. In previous example if you inspect, there will be div under div. Now, content under div      
+        </component>
+        
+    ```              
+    
+ngContainer    
+
+ ```
+    <div>
+        <div class="heading"></div> // I want to pass heading text from outside 
+        <div class="heading"></div> // I want to pass body text from outside 
+    </div>
+    
+    //Not using property binding to achiev this.
+ ```        
+ ngContent
+ ```
+        <div>
+            <div class="heading">
+                <ng-content select=".heading"></ng-content>
+            </div>  
+            <div class="body">
+                <ng-content select=".body"></ng-content>
+            </div>  
+        </div>
+        
+        //Select is identifier and its value is matcher 
+        
+        
+        <component>
+          <div class="heading">abcdef...</div>          // It will replace ng-conent. class is matcher
+          <div class="body"> ....complext-html....</div> // We can add complex struture here       
+        </component>
+        
+        // no need of selector only if you have 1 ng-content
+ ```     
+    
+##Directives 
+
++ Directives - to modify the DOM
+    + Structural - Modifies the  structure of the DOM (Whenever using prefix it with *)
+    + Attribute - Modifies the attribute of DOM elements
+
+###ngIf
+
+```
+<div *ngIf="doWeHaveAnyContent()"
+    ...
+</div>
+```    
+
+// **** If condition is truthy, It will be added to DOM otherwise It will be removed from the DOM. Inspect this.
+
+If else 
+
+```
+<div *ngIf="doWeHaveAnyContent() ; else noContent"
+    ...
+</div>   
+
+<ng-template #noContent">
+    ... empty msg ...
+</ng0template>   
+```
+
+// if content is present - upper DOM, if not lower DOM
+Like above example, we can use if-then-else using template variable and ng-template 
+
+
+###Hidden attribute
