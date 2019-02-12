@@ -649,3 +649,174 @@ Like above example, we can use if-then-else using template variable and ng-templ
 
 
 ###Hidden attribute
+
++ hidden also exists in DOM as property 
++ Do property binding 
+
+```
+<div [hidden]="hide is some cond evaluates to true">
+
+</div>
+```
+
++ DIFFERENCE between ngIf & hidden
+    + ngIf - If condition evaluates to falsy, element is removed from the DOM
+    + hidden - keeps all elements in DOM but some are hidden based on condition
++ Better ? - If large no of elements are there
+    + Memory in the DOM issue when too many elements (better to use ngIf). 
+    + Load to change detection mechanism in angular.   
+    + Large tree, When frequent toggle operations are there, ngIf might be costly so use hidden and keep elements in DOM
++      
+    
+### ngSwitch Case
+
++ Property Binding 
++ If you want to compare value against multiple values.
+
+```
+viewMode = "Map";
+
+
+<ul>
+    <li [class.active]="'map'">....
+    <li [class.active]="'list'">....
+</ul>
+
+<div [ngSwitch]="viewMode"> 
+    <div *ngSwitchCase="'map'"> some map content </div>
+    <div *ngSwitchCase="'map'"> some view content </div>
+    <div *ngSwitchDefault> Otherwise </div> //no value to default
+</div>
+
+```
+
+###ngFor
+
+```
+Component - 
+
+courses = [
+    { id:1, name:'course1'},
+    { id:1, name:'course2'},
+    { id:1, name:'course3'}
+];
+
+
+
+<ul>
+    <li *ngFor = "let c of courses">
+        {{course.name}}
+    </li>
+</ul>
+
+
+// Highlight - 1st row OR last row OR index OR odd rows
+For above purpose, we need to use exported values, so index is one of them, & we will assign it to local variable
+<ul>
+    <li *ngFor = "let c of courses; index as i">
+        {{course.name}} - {{i}}
+    </li>
+</ul>
+
+
+******* List of all exported values ************
+
+angular.io -> serach - ngForOf(actual name of ngFor is ngForOf)
+-> under local variables, you will find all exported values  
+
+
+**** Use even, odd, first as isEven, isOdd, isFirst **** 
+
+```
+
++ ngFor and change detection - 
+    + AJAX, Change event, 
++ Developer console - purpul blink - change detection 
+
+
++ Scenario 
+    + Button click - onButtonClick - array initialization
+    + Every time button is clicked, Even though content is same new objects with new memory locations will be initialised. 
+    + So, to avoid it, use reference identity . 
+    ```
+    <ul>
+        <li *ngFor="let course of courses; trackBy: trackCourse">
+        
+        </li>
+    </ul>
+    
+    
+    
+    trackCourse(index, course){
+       return course ? course.id : undefinded;
+    }
+    ```        
+    + Now, no longer purple highlight that means, no change detection 
+    + Simple list - no worrier, angular performs out of the box, complex - optimise change detection.
+     
+### Leading asterisk 
++ When you use * in directives - You are telling angular to rewrite block using ng-template. 
+     
+     
+###ngClass 
+     
+```
+In object => 
+key -> css class
+value -> boolean - should render the css or not
+
+ngClass -> Example of an attribute directive, used to modify an attribute in existing DOM element 
+
+//TODO without using ngClass example
+
+<span [ngClass]="{
+    'glyphicon-star' : isSelected,
+    'glyphicon-star-empty' : !isSelected
+}"
+```
+
+
+###ngStyle 
+
+```
+key -> css style
+value -> style value
+
+<button 
+
+    [style.backgroundColor]="canSave ? 'blue' : 'gray'"
+    [style.color]="canSave ? 'white' : 'black'"
+ 
+    [ngStyle]="{
+        'backgroundColor' : canSave ? 'blue' : 'gray',
+        'color' : canSave ? 'white' : 'black',
+    }"
+
+```
+
+###Safe traversal operator 
+
++ When traversing through complex object, object can be undefined or null for fraction of a second
+    + Error TypeError: can not read property 'name' of null 
++ 2 ways to solve it 
+    + ngIf to check null. ELEMENT WONT BE IN DOM     
+    + ? -> angular reads it as it can be null so, angular ignores it. ELEMENT AVAILABLE IN DOM
+    
+    
+### NOTES 
++ HostListener from core accepts the dom evenet 
+  ```
+  @HostListener('blue') onBlur() // Blur - when you click on the element
+  ```
++ ElementRef - service provided by angular to access DOM objects  
+  Example :- this.elementRef.nativeElement (String format etc.)
+  
+    
+###Custom Directives (REVISIT)
++ ng g d name - ng generate directive name
+    + ts file
+    + spec file
+    + It will update app.module.ts -> @NgModule - declarations - new entry 
+    + NOTE : component, pipes, directives (Which are part of the directive)- should be declared in @NgModule declarations
+    + selector : '[appInputFormat]' 
+    + Business logic 
